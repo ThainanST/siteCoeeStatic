@@ -1,0 +1,4 @@
+para rodar
+
+fnm env --shell powershell | Out-String | Invoke-Expression
+npm run dev

@@ -19,23 +19,37 @@ Em cada procedimento, reunir os requisitos, o que o aluno precisa fazer, o formu
 
 ## Dados e documentos
 
-O site é estático e compatível com GitHub Pages, sem dependências nem etapa de build. Nesta primeira versão, os exemplos locais ficam em [`assets/data/data.js`](./assets/data/data.js), separados da estrutura HTML e da apresentação. Os registros são fictícios e estão identificados como **Dados de demonstração**. Não há planilha nem serviço externo conectado.
+O site é gerado estaticamente com Astro e é compatível com GitHub Pages. Nesta primeira versão, os exemplos locais ficam em [`src/data/site.js`](./src/data/site.js), separados das páginas e dos componentes. Os registros são fictícios e estão identificados como **Dados de demonstração**. Não há planilha nem serviço externo conectado.
 
 Quando houver documentos oficiais, incluir o endereço direto do arquivo no registro correspondente e marcar documentos restritos com **Requer conta UFOP**. Enquanto um endereço não estiver configurado, o item aparece como demonstração sem link quebrado.
+
+Na área do Colegiado, apresentação, membros, reuniões e atas, NDE, documentos e contato ficam em páginas separadas. Os campos `members`, `nde` e `meetings` em `src/data/site.js` alimentam os cartões e o calendário de reuniões e atas. O campo opcional `photo` aceita o endereço de uma foto autorizada; sem ele, o cartão mostra uma ilustração. `initialMeetingMonth` define o mês inicial do calendário no formato `AAAA-MM`.
 
 Antes da publicação, conferir com o Colegiado a vigência das normas, os links, as permissões e os dados de atendimento. O [site temporário do COEE](https://coee.my.canva.site/) serve como referência para localizar os materiais atuais.
 
 ## Abrir localmente
 
-Abra `index.html` em um navegador moderno. Como alternativa, sirva esta pasta com um servidor HTTP local, por exemplo `python -m http.server 8000`, e acesse `http://localhost:8000`.
+Instale Node.js 24 LTS (ou uma versão compatível indicada em `package.json`) e execute:
+
+```sh
+npm install
+npm run dev
+```
+
+Abra o endereço exibido no terminal, incluindo o prefixo `/siteCoeeStatic/`. Para conferir a versão de produção, execute `npm run build` e depois `npm run preview`.
+
+## Publicação no GitHub Pages
+
+Em **Settings → Pages**, selecione **GitHub Actions** como fonte. O workflow em `.github/workflows/deploy.yml` compila e publica os arquivos gerados ao receber alterações na branch `main`. O endereço e o prefixo do repositório estão configurados em `astro.config.mjs`; atualize-os se o repositório ou domínio mudar.
 
 ## Organização
 
-- `*.html`: páginas e pontos de entrada, mantidos na raiz para navegação direta e GitHub Pages.
-- `assets/css/`: estilos compartilhados.
-- `assets/js/`: renderização e interações.
-- `assets/data/`: conteúdo local de demonstração.
-- `assets/images/`: imagens usadas pelo site.
+- `src/pages/`: páginas Astro, geradas como arquivos HTML.
+- `src/layouts/` e `src/components/`: estrutura e componentes compartilhados.
+- `src/styles/`: estilos compartilhados.
+- `src/data/`: conteúdo local de demonstração.
+- `src/assets/images/`: imagens usadas pelo site.
+- `dist/`: resultado do build, gerado localmente e não versionado.
 - `siteCoee.png`: captura de referência do site antigo.
 
 A direção visual está no [README-DESIGN.md](./README-DESIGN.md).

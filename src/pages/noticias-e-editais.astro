@@ -1,0 +1,12 @@
+---
+import Layout from "../layouts/Layout.astro";
+import PageHeading from "../components/PageHeading.astro";
+import PublicationCard from "../components/PublicationCard.astro";
+import data from "../data/site.js";
+const items = [...data.notices, ...data.publications];
+---
+<Layout title="Notícias e editais" page="noticias" description="Avisos, notícias e editais do curso de Engenharia Elétrica da UFOP.">
+  <PageHeading eyebrow="Atualizações do curso" title="Notícias e editais" description="Avisos, publicações e oportunidades acadêmicas. Confira datas, prazos e a situação de cada publicação." />
+  <div class="news-list">{items.map((item) => <PublicationCard item={item} />)}</div>
+  <p class="demo-note">Todos os registros apresentados nesta página são Dados de demonstração.</p>
+</Layout>

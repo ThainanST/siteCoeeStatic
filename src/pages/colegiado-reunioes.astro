@@ -1,0 +1,11 @@
+---
+import ColegiadoLayout from "../layouts/ColegiadoLayout.astro";
+import MeetingCalendar from "../components/MeetingCalendar.astro";
+---
+<ColegiadoLayout title="Reuniões e atas" section="reunioes" description="Consulte as reuniões do Colegiado e os documentos de cada encontro.">
+  <section id="reunioes" aria-label="Calendário de reuniões e atas">
+    <p class="meeting-intro">O calendário de reuniões ordinárias é aprovado a cada semestre e pode sofrer alterações de data ou horário.</p>
+    <MeetingCalendar />
+    <p class="section-footnote">Dados de demonstração: datas, horários e documentos são exemplos e não representam reuniões oficiais.</p>
+  </section>
+</ColegiadoLayout>

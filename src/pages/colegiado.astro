@@ -1,0 +1,28 @@
+---
+import ColegiadoLayout from "../layouts/ColegiadoLayout.astro";
+import DocumentList from "../components/DocumentList.astro";
+import data from "../data/site.js";
+---
+<ColegiadoLayout title="Sobre o Colegiado" section="sobre" description="Um espaço de representação, diálogo e decisões para o desenvolvimento do curso.">
+  <div class="about-grid" id="sobre">
+    <section class="about-copy" aria-labelledby="about-title">
+      <p class="eyebrow">Conheça o COEE</p><h2 id="about-title">O que faz o Colegiado?</h2>
+      <p>O Colegiado acompanha a organização acadêmica, delibera sobre assuntos do curso e reúne representantes docentes e discentes para contribuir com sua melhoria contínua.</p>
+      <p>O Estatuto da UFOP trata da finalidade, composição e competências dos colegiados de curso nos artigos 23 a 25. O Regimento Geral dispõe sobre o funcionamento dos órgãos colegiados, no que couber.</p>
+      <DocumentList documents={data.colegiadoDocuments.slice(0, 1)} />
+    </section>
+    <aside class="about-note"><span class="about-note-icon" aria-hidden="true">✦</span><p class="eyebrow">Representação e diálogo</p><h3>O curso é construído em conjunto.</h3><p>Docentes e estudantes participam das discussões acadêmicas do COEE.</p></aside>
+  </div>
+</ColegiadoLayout>
+<script>
+  import { base } from "../utils/base.js";
+  const previousLinks: Record<string, string> = {
+    "#membros": "colegiado-membros.html",
+    "#reunioes": "colegiado-reunioes.html",
+    "#nde": "colegiado-nde.html",
+    "#documentos": "colegiado-documentos.html",
+    "#contato": "colegiado-contato.html"
+  };
+  const destination = previousLinks[window.location.hash];
+  if (destination) window.location.replace(`${base}${destination}`);
+</script>

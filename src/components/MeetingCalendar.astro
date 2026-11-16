@@ -1,0 +1,121 @@
+---
+import DocumentList from "./DocumentList.astro";
+import data from "../data/site.js";
+
+const [year, month] = data.initialMeetingMonth.split("-").map(Number);
+const firstDay = new Date(Date.UTC(year, month - 1, 1));
+const daysInMonth = new Date(Date.UTC(year, month, 0)).getUTCDate();
+const monthTitle = new Intl.DateTimeFormat("pt-BR", { month: "long", year: "numeric", timeZone: "UTC" }).format(firstDay);
+const weekdayNames = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
+const dates = Array.from({ length: firstDay.getUTCDay() + daysInMonth }, (_, index) => {
+  const day = index - firstDay.getUTCDay() + 1;
+  return day > 0 ? day : null;
+});
+const dateLabel = (value: string) => {
+  const [y, m, d] = value.split("-").map(Number);
+  return new Intl.DateTimeFormat("pt-BR", { day: "2-digit", month: "long", year: "numeric", timeZone: "UTC" }).format(new Date(Date.UTC(y, m - 1, d)));
+};
+---
+<div class="meeting-calendar" id="meeting-calendar" data-month={data.initialMeetingMonth}>
+  <div class="calendar-panel">
+    <div class="calendar-heading">
+      <div><p class="calendar-kicker">Calendário do colegiado</p><h3 id="calendar-month" aria-live="polite">{monthTitle}</h3></div>
+      <div class="calendar-controls" hidden>
+        <button type="button" data-calendar-step="-1" aria-label="Mês anterior">←</button>
+        <button type="button" data-calendar-step="1" aria-label="Próximo mês">→</button>
+      </div>
+    </div>
+    <div class="calendar-weekdays" aria-hidden="true">{weekdayNames.map((day) => <span>{day}</span>)}</div>
+    <div class="calendar-grid" aria-label="Dias do mês">
+      {dates.map((day) => {
+        const isoDate = day ? `${data.initialMeetingMonth}-${String(day).padStart(2, "0")}` : "";
+        const meeting = data.meetings.find((item) => item.date === isoDate);
+        return day
+          ? meeting
+            ? <a class="calendar-day has-meeting" href={`#${meeting.id}`} aria-label={`${dateLabel(isoDate)}: ${meeting.title}`}><span>{day}</span><span class="calendar-dot" aria-hidden="true"></span></a>
+            : <span class="calendar-day">{day}</span>
+          : <span class="calendar-day is-empty" aria-hidden="true"></span>;
+      })}
+    </div>
+    <p class="calendar-legend"><span class="calendar-dot" aria-hidden="true"></span> Dia com reunião</p>
+  </div>
+  <div class="meeting-list">
+    <div class="meeting-list-heading"><p class="calendar-kicker">Programação</p><h3>Reuniões e atas</h3><p>Selecione um mês para consultar os registros.</p></div>
+    <p class="meeting-empty" hidden={data.meetings.some((meeting) => meeting.date.startsWith(data.initialMeetingMonth))}>Nenhuma reunião de demonstração neste mês.</p>
+    {data.meetings.map((meeting) => (
+      <article class="meeting-item" id={meeting.id} data-meeting-month={meeting.date.slice(0, 7)} hidden={!meeting.date.startsWith(data.initialMeetingMonth)}>
+        <div class="meeting-date"><strong>{meeting.date.slice(8, 10)}</strong><span>{new Intl.DateTimeFormat("pt-BR", { month: "short", timeZone: "UTC" }).format(new Date(`${meeting.date}T12:00:00Z`)).replace(".", "")}</span></div>
+        <div class="meeting-info">
+          <span class="meeting-kind">REUNIÃO · DEMONSTRAÇÃO</span>
+          <h4>{meeting.title}</h4>
+          <p><time datetime={meeting.date}>{dateLabel(meeting.date)}</time> · {meeting.time}</p>
+          <p>{meeting.location}</p>
+          <DocumentList documents={[meeting.minutes]} />
+        </div>
+      </article>
+    ))}
+  </div>
+</div>
+<script>
+  import data from "../data/site.js";
+
+  const calendar = document.querySelector<HTMLElement>("#meeting-calendar");
+  if (calendar) {
+    const grid = calendar.querySelector<HTMLElement>(".calendar-grid");
+    const title = calendar.querySelector<HTMLElement>("#calendar-month");
+    const controls = calendar.querySelector<HTMLElement>(".calendar-controls");
+    const empty = calendar.querySelector<HTMLElement>(".meeting-empty");
+    const items = calendar.querySelectorAll<HTMLElement>("[data-meeting-month]");
+    const [initialYear, initialMonth] = (calendar.dataset.month || "").split("-").map(Number);
+    let year = initialYear;
+    let month = initialMonth;
+
+    if (grid && title && controls && empty && Number.isInteger(year) && Number.isInteger(month)) {
+      controls.hidden = false;
+      const render = () => {
+        const key = `${year}-${String(month).padStart(2, "0")}`;
+        const first = new Date(Date.UTC(year, month - 1, 1));
+        const count = new Date(Date.UTC(year, month, 0)).getUTCDate();
+        title.textContent = new Intl.DateTimeFormat("pt-BR", { month: "long", year: "numeric", timeZone: "UTC" }).format(first);
+        grid.replaceChildren();
+        for (let i = 0; i < first.getUTCDay(); i++) {
+          const blank = document.createElement("span");
+          blank.className = "calendar-day is-empty";
+          blank.setAttribute("aria-hidden", "true");
+          grid.append(blank);
+        }
+        for (let day = 1; day <= count; day++) {
+          const iso = `${key}-${String(day).padStart(2, "0")}`;
+          const meeting = data.meetings.find((item) => item.date === iso);
+          const cell = document.createElement(meeting ? "a" : "span");
+          cell.className = meeting ? "calendar-day has-meeting" : "calendar-day";
+          cell.textContent = String(day);
+          if (meeting && cell instanceof HTMLAnchorElement) {
+            cell.href = `#${meeting.id}`;
+            const label = new Intl.DateTimeFormat("pt-BR", { day: "2-digit", month: "long", year: "numeric", timeZone: "UTC" }).format(new Date(Date.UTC(year, month - 1, day)));
+            cell.setAttribute("aria-label", `${label}: ${meeting.title}`);
+            const dot = document.createElement("span");
+            dot.className = "calendar-dot";
+            dot.setAttribute("aria-hidden", "true");
+            cell.append(dot);
+          }
+          grid.append(cell);
+        }
+        let visible = 0;
+        items.forEach((item) => {
+          item.hidden = item.dataset.meetingMonth !== key;
+          if (!item.hidden) visible++;
+        });
+        empty.hidden = visible > 0;
+      };
+      controls.addEventListener("click", (event) => {
+        const button = event.target instanceof Element ? event.target.closest<HTMLButtonElement>("[data-calendar-step]") : null;
+        if (!button) return;
+        const next = new Date(Date.UTC(year, month - 1 + Number(button.dataset.calendarStep), 1));
+        year = next.getUTCFullYear();
+        month = next.getUTCMonth() + 1;
+        render();
+      });
+    }
+  }
+</script>

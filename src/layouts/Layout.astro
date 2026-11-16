@@ -1,0 +1,62 @@
+---
+import data from "../data/site.js";
+import logo from "../assets/images/logoDeelt.jpg";
+import { base } from "../utils/base.js";
+import "../styles/global.css";
+
+interface Props {
+  title: string;
+  page: string;
+  description: string;
+}
+const { title, page, description } = Astro.props;
+---
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#292a31" />
+    <meta name="description" content={description} />
+    <title>{title} | COEE · UFOP</title>
+  </head>
+  <body data-page={page}>
+    <a class="skip-link" href="#content">Pular para o conteúdo</a>
+    <header class="site-header">
+      <div class="institution-strip"><div class="container"><span>Universidade Federal de Ouro Preto</span><a href="https://ufop.br/">Portal UFOP <span aria-hidden="true">↗</span></a></div></div>
+      <div class="brand-band"><div class="container brand-row">
+        <a class="brand" href={`${base}index.html`} aria-label="COEE UFOP — página inicial">
+          <img class="brand-logo" src={logo.src} width="82" height="82" alt="" />
+          <span class="brand-copy">
+            <span class="brand-abbr">COEE <span>· UFOP</span></span>
+            <strong>Colegiado do Curso de<br />Engenharia Elétrica</strong>
+            <small>ICEA · Campus João Monlevade</small>
+          </span>
+        </a>
+        <span class="demo-flag">Dados de demonstração</span>
+        <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-navigation"><span class="menu-icon" aria-hidden="true">☰</span><span>Menu</span></button>
+      </div></div>
+      <nav class="primary-nav" id="primary-navigation" aria-label="Navegação principal"><div class="container nav-links">
+        {data.navigation.map((item) => <a href={`${base}${item.href}`} aria-current={item.id === page ? "page" : undefined}>{item.label}</a>)}
+      </div></nav>
+    </header>
+    <main id="content" class="page-content" tabindex="-1"><slot /></main>
+    <footer class="site-footer"><div class="container footer-inner">
+      <a class="footer-brand" href={`${base}index.html`}>COEE <span>· UFOP</span></a>
+      <p>Colegiado do Curso de Engenharia Elétrica<br />ICEA · João Monlevade · Minas Gerais</p>
+      <a class="text-link" href={`${base}colegiado-contato.html`}>Contato institucional →</a>
+      <small>Conteúdo e documentos fictícios para demonstração. Consulte os canais oficiais da UFOP.</small>
+    </div></footer>
+    <script>
+      const toggle = document.querySelector<HTMLButtonElement>(".menu-toggle");
+      const navigation = document.querySelector<HTMLElement>("#primary-navigation");
+      if (toggle && navigation) {
+        toggle.addEventListener("click", () => {
+          const expanded = toggle.getAttribute("aria-expanded") === "true";
+          toggle.setAttribute("aria-expanded", String(!expanded));
+          navigation.classList.toggle("is-open", !expanded);
+        });
+      }
+    </script>
+  </body>
+</html>

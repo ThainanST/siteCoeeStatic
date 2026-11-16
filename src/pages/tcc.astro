@@ -1,0 +1,26 @@
+---
+import Layout from "../layouts/Layout.astro";
+import PageHeading from "../components/PageHeading.astro";
+import DocumentList from "../components/DocumentList.astro";
+import data from "../data/site.js";
+---
+<Layout title="TCC" page="tcc" description="Orientações, prazos, documentos e defesas de Trabalho de Conclusão de Curso.">
+  <PageHeading eyebrow="Trabalho de Conclusão de Curso" title="TCC" description="Acompanhe cada etapa do Trabalho de Conclusão de Curso, da escolha do tema ao depósito da versão final." />
+  <nav class="anchor-nav" aria-label="Seções do TCC">
+    {data.tcc.steps.map((step) => <a href={`#${step.id}`}>{step.title}<span aria-hidden="true">↘</span></a>)}
+  </nav>
+  <div class="tcc-sections">
+    {data.tcc.steps.map((step) => (
+      <section class="content-section" id={step.id}>
+        <p class="eyebrow">Etapa do TCC</p><h2>{step.title}</h2><p>{step.text}</p>
+        <DocumentList documents={step.documents} />
+        {step.id === "defesas" && <>
+          <div class="defense-list">
+            {data.tcc.defenses.map((defense) => <article class="defense-card"><div><span class="badge">{defense.status}</span><h3>{defense.title}</h3></div><p><strong>{defense.date}</strong> · {defense.time}</p><p>{defense.location}</p></article>)}
+          </div>
+          <p class="demo-note">Defesas e dados de demonstração. Publicação sujeita à autorização dos envolvidos.</p>
+        </>}
+      </section>
+    ))}
+  </div>
+</Layout>

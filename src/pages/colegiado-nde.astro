@@ -1,0 +1,14 @@
+---
+import ColegiadoLayout from "../layouts/ColegiadoLayout.astro";
+import DocumentList from "../components/DocumentList.astro";
+import PeopleCards from "../components/PeopleCards.astro";
+import data from "../data/site.js";
+---
+<ColegiadoLayout title="Núcleo Docente Estruturante" section="nde" description="O NDE acompanha a consolidação e a atualização do projeto pedagógico do curso.">
+  <section id="nde" aria-label="Membros e documentos do NDE">
+    <span class="section-tag">Dados de demonstração</span>
+    <PeopleCards people={data.nde} />
+    <p class="section-footnote">Nomes e funções fictícios; imagens ilustrativas serão substituídas por fotos autorizadas.</p>
+    <DocumentList documents={data.colegiadoDocuments.filter((document) => document.title.includes("NDE"))} />
+  </section>
+</ColegiadoLayout>

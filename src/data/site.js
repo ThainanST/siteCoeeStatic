@@ -1,5 +1,5 @@
 /* Conteúdo local de demonstração. Substitua esta fonte por uma integração futura. */
-window.coeeData = {
+export default {
   navigation: [
     { id: "inicio", label: "Início", href: "index.html" },
     { id: "curso", label: "Curso", href: "curso.html" },
@@ -153,6 +153,13 @@ window.coeeData = {
     { name: "Prof. Bruno Costa (demonstração)", role: "Representante docente" },
     { name: "Estudante Camila Souza (demonstração)", role: "Representante discente" }
   ],
+  meetings: [
+    { id: "reuniao-2026-10-15", date: "2026-10-15", title: "Reunião ordinária", time: "14h", location: "ICEA · Sala do Colegiado", minutes: { title: "Ata da reunião ordinária", access: "public" } },
+    { id: "reuniao-2026-11-12", date: "2026-11-12", title: "Reunião ordinária", time: "14h", location: "ICEA · Sala do Colegiado", minutes: { title: "Ata da reunião ordinária", access: "public" } },
+    { id: "reuniao-2026-11-24", date: "2026-11-24", title: "Reunião extraordinária", time: "15h", location: "ICEA · Sala do Colegiado", minutes: { title: "Ata da reunião extraordinária", access: "ufop" } },
+    { id: "reuniao-2026-12-03", date: "2026-12-03", title: "Reunião ordinária", time: "14h", location: "ICEA · Sala do Colegiado", minutes: { title: "Ata da reunião ordinária", access: "public" } }
+  ],
+  initialMeetingMonth: "2026-11",
   nde: [
     { name: "Profa. Daniela Lima (demonstração)", role: "Coordenadora do NDE" },
     { name: "Prof. Eduardo Reis (demonstração)", role: "Membro docente" },

@@ -1,0 +1,13 @@
+---
+import ColegiadoLayout from "../layouts/ColegiadoLayout.astro";
+import PeopleCards from "../components/PeopleCards.astro";
+import data from "../data/site.js";
+---
+<ColegiadoLayout title="Membros do Colegiado" section="membros" description="Conheça as pessoas que participam da representação do curso.">
+  <section id="membros" aria-label="Membros do Colegiado">
+    <span class="section-tag">Dados de demonstração</span>
+    <PeopleCards people={data.members} />
+    <p class="section-footnote">Nomes e funções fictícios; imagens ilustrativas serão substituídas por fotos autorizadas.</p>
+    <details class="declaration-info"><summary>Como solicitar declaração de membro?</summary><p>A cópia do site anterior orienta a solicitação pelo SEI, por meio de um ofício, com referência à Resolução CDICEA 213. Confirme o procedimento e a norma vigente com o Colegiado antes de enviar.</p></details>
+  </section>
+</ColegiadoLayout>

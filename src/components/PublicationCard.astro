@@ -1,0 +1,30 @@
+---
+import DocumentList from "./DocumentList.astro";
+import { base } from "../utils/base.js";
+
+interface Publication {
+  label?: string;
+  category?: string;
+  title: string;
+  date: string;
+  text: string;
+  href?: string;
+  status?: string;
+  deadline?: string;
+  document?: { title: string; access: string; url?: string };
+}
+
+interface Props {
+  item: Publication;
+}
+
+const { item } = Astro.props;
+---
+<article class="publication-card">
+  <div class="card-meta"><span class="badge">{item.category || item.label}</span><time>{item.date}</time></div>
+  <h3>{item.href ? <a href={`${base}${item.href}`}>{item.title}</a> : item.title}</h3>
+  <p>{item.text}</p>
+  {item.status && <p class="publication-status">{item.status}{item.deadline && ` · Prazo: ${item.deadline}`}</p>}
+  {item.document && <DocumentList documents={[item.document]} />}
+  <span class="demo-note">Dados de demonstração</span>
+</article>

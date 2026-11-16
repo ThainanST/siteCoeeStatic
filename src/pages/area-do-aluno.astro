@@ -1,0 +1,25 @@
+---
+import Layout from "../layouts/Layout.astro";
+import PageHeading from "../components/PageHeading.astro";
+import DocumentList from "../components/DocumentList.astro";
+import data from "../data/site.js";
+---
+<Layout title="Área do Aluno" page="aluno" description="Serviços, orientações e procedimentos para estudantes de Engenharia Elétrica da UFOP.">
+  <PageHeading eyebrow="Serviços e orientações" title="Área do Aluno" description="Encontre o procedimento pela tarefa. Confira requisitos, formulário, canal de envio e norma antes de iniciar uma solicitação." />
+  <nav class="task-nav" aria-label="Ir para um procedimento">
+    {data.studentTasks.map((task) => <a href={`#${task.id}`}>{task.title.replace("Solicitar ", "")}</a>)}
+  </nav>
+  <div class="task-list">
+    {data.studentTasks.map((task) => (
+      <article class="task-card" id={task.id}>
+        <div class="task-title"><span class="card-index">PROCEDIMENTO</span><h2>{task.title}</h2><p>{task.description}</p></div>
+        <div class="task-details">
+          <section><h3>Requisitos</h3><ul>{task.requirements.map((requirement) => <li>{requirement}</li>)}</ul></section>
+          <section><h3>Formulário</h3><p>{task.form}</p><DocumentList documents={task.documents || (task.document ? [task.document] : [])} /></section>
+          <section><h3>Canal de envio</h3><p>{task.channel}</p></section>
+          <section><h3>Norma de referência</h3><p>{task.norm}</p></section>
+        </div>
+      </article>
+    ))}
+  </div>
+</Layout>

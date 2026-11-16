@@ -1,0 +1,28 @@
+---
+interface Document {
+  title: string;
+  access: string;
+  url?: string;
+}
+
+interface Props {
+  documents: Document[];
+}
+
+const { documents } = Astro.props;
+---
+{documents.length > 0 && (
+  <ul class="document-list">
+    {documents.map((document) => (
+      <li>
+        <div class:list={["document-link", { "document-unavailable": !document.url }]}>
+          {document.url ? <a href={document.url}>{document.title}</a> : <span>{document.title}</span>}
+          <span class="document-badges">
+            {document.access === "ufop" && <span class="badge badge-restricted">Requer conta UFOP</span>}
+            {!document.url && <span class="badge badge-demo">Link de demonstração indisponível</span>}
+          </span>
+        </div>
+      </li>
+    ))}
+  </ul>
+)}

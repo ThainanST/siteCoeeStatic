@@ -1,0 +1,11 @@
+---
+import ColegiadoLayout from "../layouts/ColegiadoLayout.astro";
+import DocumentList from "../components/DocumentList.astro";
+import data from "../data/site.js";
+---
+<ColegiadoLayout title="Documentos e resoluções" section="documentos" description="Consulte os documentos relacionados às atividades do Colegiado.">
+  <section class="content-section" id="documentos" aria-label="Documentos do Colegiado">
+    <p>Os documentos abaixo são exemplos e ainda não possuem endereços oficiais.</p>
+    <DocumentList documents={data.colegiadoDocuments.slice(1, 3)} />
+  </section>
+</ColegiadoLayout>
