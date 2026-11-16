@@ -1,6 +1,7 @@
 ---
 import DocumentList from "./DocumentList.astro";
 import { base } from "../utils/base.js";
+import { formatPublicationDate } from "../utils/dates.js";
 
 interface Publication {
   label?: string;
@@ -19,12 +20,17 @@ interface Props {
 }
 
 const { item } = Astro.props;
+const formattedDate = formatPublicationDate(item.date);
+const searchText = [item.title, item.category, item.label, item.text, formattedDate, item.status, item.deadline, item.document?.title].filter(Boolean).join(" ");
 ---
-<article class="publication-card">
-  <div class="card-meta"><span class="badge">{item.category || item.label}</span><time>{item.date}</time></div>
+<article class="publication-card" data-search={searchText} data-published={item.date}>
+  <div class="publication-top"><span class="publication-category">{item.category || item.label}</span><span class="publication-demo">Demonstração</span></div>
   <h3>{item.href ? <a href={`${base}${item.href}`}>{item.title}</a> : item.title}</h3>
-  <p>{item.text}</p>
-  {item.status && <p class="publication-status">{item.status}{item.deadline && ` · Prazo: ${item.deadline}`}</p>}
+  <p class="publication-description">{item.text}</p>
+  <dl class="publication-properties">
+    <div><dt>Publicado</dt><dd><time datetime={item.date}>{formattedDate}</time></dd></div>
+    {item.status && <div><dt>Situação</dt><dd>{item.status}</dd></div>}
+    {item.deadline && <div><dt>Prazo</dt><dd>{item.deadline}</dd></div>}
+  </dl>
   {item.document && <DocumentList documents={[item.document]} />}
-  <span class="demo-note">Dados de demonstração</span>
 </article>

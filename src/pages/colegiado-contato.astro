@@ -1,11 +1,4 @@
 ---
-import ColegiadoLayout from "../layouts/ColegiadoLayout.astro";
-import data from "../data/site.js";
+import { base } from "../utils/base.js";
 ---
-<ColegiadoLayout title="Contato do COEE" section="contato" description="Informações de atendimento do Colegiado do Curso de Engenharia Elétrica.">
-  <section class="contact-card" id="contato" aria-label="Contato do Colegiado">
-    <p class="eyebrow">Atendimento · dados de demonstração</p>
-    <p>{data.contact.institution}</p><p>{data.contact.location}</p><p>{data.contact.email}</p>
-    <span class="demo-note">Confirme os canais oficiais antes de enviar informações pessoais.</span>
-  </section>
-</ColegiadoLayout>
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8" /><meta http-equiv="refresh" content={`0;url=${base}contato.html`} /><title>Contato</title></head><body><p>Esta página mudou: <a href={`${base}contato.html`}>Contato</a>.</p></body></html>

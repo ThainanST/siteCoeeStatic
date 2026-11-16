@@ -1,5 +1,5 @@
 ---
-import data from "../data/site.js";
+import { navigation } from "../data/navigation.js";
 import logo from "../assets/images/logoDeelt.jpg";
 import { base } from "../utils/base.js";
 import "../styles/global.css";
@@ -37,15 +37,15 @@ const { title, page, description } = Astro.props;
         <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-navigation"><span class="menu-icon" aria-hidden="true">☰</span><span>Menu</span></button>
       </div></div>
       <nav class="primary-nav" id="primary-navigation" aria-label="Navegação principal"><div class="container nav-links">
-        {data.navigation.map((item) => <a href={`${base}${item.href}`} aria-current={item.id === page ? "page" : undefined}>{item.label}</a>)}
+        {navigation.map((item) => <a href={`${base}${item.href}`} aria-current={item.id === page ? "page" : undefined}>{item.label}</a>)}
       </div></nav>
     </header>
     <main id="content" class="page-content" tabindex="-1"><slot /></main>
     <footer class="site-footer"><div class="container footer-inner">
       <a class="footer-brand" href={`${base}index.html`}>COEE <span>· UFOP</span></a>
       <p>Colegiado do Curso de Engenharia Elétrica<br />ICEA · João Monlevade · Minas Gerais</p>
-      <a class="text-link" href={`${base}colegiado-contato.html`}>Contato institucional →</a>
-      <small>Conteúdo e documentos fictícios para demonstração. Consulte os canais oficiais da UFOP.</small>
+      <a class="text-link" href={`${base}contato.html`}>Contato institucional →</a>
+      <small>Dados de demonstração e links institucionais. Confirme as informações nos canais oficiais da UFOP.</small>
     </div></footer>
     <script>
       const toggle = document.querySelector<HTMLButtonElement>(".menu-toggle");

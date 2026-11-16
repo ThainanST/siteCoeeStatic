@@ -1,9 +1,10 @@
 ---
 import ColegiadoLayout from "../layouts/ColegiadoLayout.astro";
 import DocumentList from "../components/DocumentList.astro";
+import PeopleCards from "../components/PeopleCards.astro";
 import data from "../data/site.js";
 ---
-<ColegiadoLayout title="Sobre o Colegiado" section="sobre" description="Um espaço de representação, diálogo e decisões para o desenvolvimento do curso.">
+<ColegiadoLayout title="Sobre o colegiado e membros" section="sobre" description="Um espaço de representação, diálogo e decisões para o desenvolvimento do curso.">
   <div class="about-grid" id="sobre">
     <section class="about-copy" aria-labelledby="about-title">
       <p class="eyebrow">Conheça o COEE</p><h2 id="about-title">O que faz o Colegiado?</h2>
@@ -13,15 +14,20 @@ import data from "../data/site.js";
     </section>
     <aside class="about-note"><span class="about-note-icon" aria-hidden="true">✦</span><p class="eyebrow">Representação e diálogo</p><h3>O curso é construído em conjunto.</h3><p>Docentes e estudantes participam das discussões acadêmicas do COEE.</p></aside>
   </div>
+  <section class="members-section" id="membros" aria-labelledby="members-title">
+    <p class="eyebrow">Composição · Dados de demonstração</p><h2 id="members-title">Membros do Colegiado</h2>
+    <PeopleCards people={data.members} />
+    <p class="section-footnote">Nomes e funções fictícios; imagens ilustrativas serão substituídas por fotos autorizadas.</p>
+    <details class="declaration-info"><summary>Como solicitar declaração de membro?</summary><p>A cópia do site anterior orienta a solicitação pelo SEI, por meio de um ofício, com referência à Resolução CDICEA 213. Confirme o procedimento e a norma vigente com o Colegiado antes de enviar.</p></details>
+  </section>
 </ColegiadoLayout>
 <script>
   import { base } from "../utils/base.js";
   const previousLinks: Record<string, string> = {
-    "#membros": "colegiado-membros.html",
     "#reunioes": "colegiado-reunioes.html",
     "#nde": "colegiado-nde.html",
     "#documentos": "colegiado-documentos.html",
-    "#contato": "colegiado-contato.html"
+    "#contato": "contato.html"
   };
   const destination = previousLinks[window.location.hash];
   if (destination) window.location.replace(`${base}${destination}`);

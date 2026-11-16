@@ -1,0 +1,34 @@
+---
+import SectionLayout from "../layouts/SectionLayout.astro";
+import DocumentList from "../components/DocumentList.astro";
+import data from "../data/site.js";
+import { navigation, officialLinks } from "../data/navigation.js";
+
+export function getStaticPaths() {
+  return navigation.flatMap((group) => (group.items || [])
+    .filter((item) => (group.id === "aluno" && !["tcc"].includes(item.id)) || (group.id === "curso" && item.id !== "sobre"))
+    .map((item) => ({ params: { slug: item.href.replace(/\.html$/, "") }, props: { group: group.id, item } })));
+}
+
+const { group, item } = Astro.props;
+const task = group === "aluno" ? data.studentTasks.find((entry) => entry.id === item.id) : undefined;
+const course = group === "curso" ? data.course.pages[item.id] : undefined;
+if (!task && !course) throw new Error(`Conteúdo não encontrado: ${item.id}`);
+---
+<SectionLayout title={item.label} group={group} section={item.id} description={task?.description || course.description}>
+  {task && <article class="task-card" id={task.id}>
+    <div class="task-title"><span class="card-index">PROCEDIMENTO · DEMONSTRAÇÃO</span><h2>{task.title}</h2><p>{task.description}</p></div>
+    <div class="task-details">
+      <section><h3>Requisitos</h3><ul>{task.requirements.map((requirement) => <li>{requirement}</li>)}</ul></section>
+      <section><h3>Formulário</h3><p>{task.form}</p><DocumentList documents={task.documents || (task.document ? [task.document] : [])} /></section>
+      <section><h3>Canal de envio</h3><p>{task.channel}</p></section>
+      <section><h3>Norma de referência</h3><p>{task.norm}</p></section>
+    </div>
+  </article>}
+  {course && <section class="content-section">
+    {course.document ? <>
+      <p>{course.document.url ? "Acervo indicado pelo site anterior do COEE. Confirme a versão vigente com o Colegiado." : "Documento de demonstração. O endereço oficial será informado após confirmação."}</p>
+      <DocumentList documents={[course.document]} />
+    </> : <p><a class="text-link" href={officialLinks.avaliacao}>Avaliação do curso no DEELT ↗</a></p>}
+  </section>}
+</SectionLayout>

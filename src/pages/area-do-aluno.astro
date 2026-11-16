@@ -1,25 +1,39 @@
 ---
-import Layout from "../layouts/Layout.astro";
-import PageHeading from "../components/PageHeading.astro";
+import SectionLayout from "../layouts/SectionLayout.astro";
 import DocumentList from "../components/DocumentList.astro";
 import data from "../data/site.js";
+import { officialLinks } from "../data/navigation.js";
 ---
-<Layout title="Área do Aluno" page="aluno" description="Serviços, orientações e procedimentos para estudantes de Engenharia Elétrica da UFOP.">
-  <PageHeading eyebrow="Serviços e orientações" title="Área do Aluno" description="Encontre o procedimento pela tarefa. Confira requisitos, formulário, canal de envio e norma antes de iniciar uma solicitação." />
-  <nav class="task-nav" aria-label="Ir para um procedimento">
-    {data.studentTasks.map((task) => <a href={`#${task.id}`}>{task.title.replace("Solicitar ", "")}</a>)}
-  </nav>
-  <div class="task-list">
-    {data.studentTasks.map((task) => (
-      <article class="task-card" id={task.id}>
-        <div class="task-title"><span class="card-index">PROCEDIMENTO</span><h2>{task.title}</h2><p>{task.description}</p></div>
-        <div class="task-details">
-          <section><h3>Requisitos</h3><ul>{task.requirements.map((requirement) => <li>{requirement}</li>)}</ul></section>
-          <section><h3>Formulário</h3><p>{task.form}</p><DocumentList documents={task.documents || (task.document ? [task.document] : [])} /></section>
-          <section><h3>Canal de envio</h3><p>{task.channel}</p></section>
-          <section><h3>Norma de referência</h3><p>{task.norm}</p></section>
-        </div>
-      </article>
-    ))}
-  </div>
-</Layout>
+<SectionLayout title="Links e orientações" group="aluno" description="Acesse serviços e outras informações úteis para estudantes.">
+  <section class="content-section useful-links">
+    <h2>Links úteis</h2>
+    <p>Acesse os serviços oficiais da UFOP.</p>
+    <ul class="official-links">
+      <li id="calendario"><a href={officialLinks.calendario}>Calendário acadêmico ↗</a></li>
+      <li id="apoio"><a href={officialLinks.psicologia}>Atendimento psicológico em João Monlevade ↗</a></li>
+    </ul>
+  </section>
+  <section class="content-section useful-links">
+    <h2>Outras orientações</h2>
+    {data.studentTasks.filter((task) => ["horarios", "bolsas"].includes(task.id)).map((task) => <details class="declaration-info" id={task.id}>
+      <summary>{task.title}</summary>
+      <p>{task.description}</p>
+      <p><strong>Requisitos:</strong> {task.requirements.join(" ")}</p>
+      <p><strong>Formulário:</strong> {task.form}</p>
+      <DocumentList documents={task.document ? [task.document] : []} />
+      <p><strong>Canal:</strong> {task.channel}</p>
+      <p><strong>Norma:</strong> {task.norm}</p>
+    </details>)}
+  </section>
+</SectionLayout>
+<script>
+  import { base } from "../utils/base.js";
+  const previousLinks: Record<string, string> = {
+    "#estagio": "aluno-estagio.html",
+    "#aproveitamento": "aluno-aproveitamento.html",
+    "#enfase": "aluno-enfase.html",
+    "#atividades": "aluno-atividades.html"
+  };
+  const destination = previousLinks[window.location.hash];
+  if (destination) window.location.replace(`${base}${destination}`);
+</script>

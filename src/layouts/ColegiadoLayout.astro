@@ -1,6 +1,5 @@
 ---
-import Layout from "./Layout.astro";
-import { base } from "../utils/base.js";
+import SectionLayout from "./SectionLayout.astro";
 
 interface Props {
   title: string;
@@ -9,26 +8,5 @@ interface Props {
 }
 
 const { title, description, section } = Astro.props;
-const sections = [
-  { id: "sobre", label: "Apresentação", href: "colegiado.html" },
-  { id: "membros", label: "Membros", href: "colegiado-membros.html" },
-  { id: "reunioes", label: "Reuniões e atas", href: "colegiado-reunioes.html" },
-  { id: "nde", label: "NDE", href: "colegiado-nde.html" },
-  { id: "documentos", label: "Documentos", href: "colegiado-documentos.html" },
-  { id: "contato", label: "Contato", href: "colegiado-contato.html" }
-];
 ---
-<Layout title={title} page="colegiado" description={description}>
-  <div class="colegiado-page">
-    <p class="colegiado-breadcrumb"><a href={`${base}index.html`}>Início</a><span aria-hidden="true"> / </span><a href={`${base}colegiado.html`}>Colegiado</a></p>
-    <nav class="colegiado-nav" aria-label="Seções do Colegiado">
-      {sections.map((item) => <a href={`${base}${item.href}`} aria-current={item.id === section ? "page" : undefined}>{item.label}</a>)}
-    </nav>
-    <header class="colegiado-heading">
-      <p class="eyebrow">Colegiado de Engenharia Elétrica · UFOP</p>
-      <h1>{title}</h1>
-      <p>{description}</p>
-    </header>
-    <slot />
-  </div>
-</Layout>
+<SectionLayout title={title} description={description} group="colegiado" section={section}><slot /></SectionLayout>

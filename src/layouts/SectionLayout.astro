@@ -1,0 +1,49 @@
+---
+import Layout from "./Layout.astro";
+import { navigation } from "../data/navigation.js";
+import { base } from "../utils/base.js";
+
+interface Props {
+  title: string;
+  description: string;
+  group: string;
+  section?: string;
+}
+
+const { title, description, group, section } = Astro.props;
+const current = navigation.find((item) => item.id === group);
+if (!current?.items) throw new Error(`Seção de navegação inválida: ${group}`);
+---
+<Layout title={title} page={group} description={description}>
+  <div class="section-layout">
+    <aside class="section-sidebar">
+      <div class="section-menu section-menu-desktop">
+        <div class="section-menu-title">{current.label}</div>
+        <nav aria-label={`Navegação: ${current.label}`}>
+          {current.items.map((item) => <a href={`${base}${item.href}`} aria-current={item.id === section ? "page" : undefined}>{item.label}</a>)}
+        </nav>
+      </div>
+      <details class="section-menu section-menu-mobile">
+        <summary>
+          <span class="section-menu-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16" /></svg>
+          </span>
+          <span class="section-menu-copy"><span class="section-menu-kicker">Menu da seção</span><strong>{current.label}</strong></span>
+          <span class="section-menu-arrow" aria-hidden="true">⌄</span>
+        </summary>
+        <nav aria-label={`Navegação: ${current.label}`}>
+          {current.items.map((item) => <a href={`${base}${item.href}`} aria-current={item.id === section ? "page" : undefined}>{item.label}</a>)}
+        </nav>
+      </details>
+    </aside>
+    <div class="section-content">
+      <p class="colegiado-breadcrumb"><a href={`${base}index.html`}>Início</a><span aria-hidden="true"> / </span><a href={`${base}${current.href}`}>{current.label}</a></p>
+      <header class="colegiado-heading">
+        <p class="eyebrow">{current.label} · Engenharia Elétrica · UFOP</p>
+        <h1>{title}</h1>
+        <p>{description}</p>
+      </header>
+      <slot />
+    </div>
+  </div>
+</Layout>

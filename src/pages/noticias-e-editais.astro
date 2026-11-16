@@ -7,6 +7,49 @@ const items = [...data.notices, ...data.publications];
 ---
 <Layout title="Notícias e editais" page="noticias" description="Avisos, notícias e editais do curso de Engenharia Elétrica da UFOP.">
   <PageHeading eyebrow="Atualizações do curso" title="Notícias e editais" description="Avisos, publicações e oportunidades acadêmicas. Confira datas, prazos e a situação de cada publicação." />
-  <div class="news-list">{items.map((item) => <PublicationCard item={item} />)}</div>
+  <section aria-labelledby="publications-title">
+    <h2 class="news-heading" id="publications-title">Publicações</h2>
+    <div class="news-search" hidden>
+      <div class="news-search-fields">
+        <div><label for="news-search-input">Buscar publicações</label><input id="news-search-input" type="search" placeholder="Título, assunto ou categoria" aria-controls="news-list" /></div>
+        <div><label for="news-date-start">Publicado de</label><input id="news-date-start" type="date" aria-controls="news-list" aria-describedby="news-search-status" /></div>
+        <div><label for="news-date-end">Publicado até</label><input id="news-date-end" type="date" aria-controls="news-list" aria-describedby="news-search-status" /></div>
+      </div>
+      <p id="news-search-status" class="news-search-status" aria-live="polite" aria-atomic="true"></p>
+    </div>
+    <div class="news-list" id="news-list">{items.map((item) => <PublicationCard item={item} />)}</div>
+  </section>
   <p class="demo-note">Todos os registros apresentados nesta página são Dados de demonstração.</p>
 </Layout>
+<script>
+  const search = document.querySelector<HTMLElement>(".news-search");
+  const input = document.querySelector<HTMLInputElement>("#news-search-input");
+  const start = document.querySelector<HTMLInputElement>("#news-date-start");
+  const end = document.querySelector<HTMLInputElement>("#news-date-end");
+  const status = document.querySelector<HTMLElement>(".news-search-status");
+  const cards = Array.from(document.querySelectorAll<HTMLElement>("#news-list .publication-card"));
+
+  const normalize = (text: string) => text.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLocaleLowerCase("pt-BR").trim().replace(/\s+/g, " ");
+  if (search && input && start && end && status) {
+    const entries = cards.map((card) => ({ card, text: normalize(card.dataset.search || ""), date: card.dataset.published || "" }));
+    const update = () => {
+      const query = normalize(input.value);
+      const reversed = Boolean(start.value && end.value && start.value > end.value);
+      const invalid = !start.validity.valid || !end.validity.valid || reversed;
+      start.setAttribute("aria-invalid", String(!start.validity.valid || reversed));
+      end.setAttribute("aria-invalid", String(!end.validity.valid || reversed));
+      let count = 0;
+      entries.forEach(({ card, text, date }) => {
+        const matches = !invalid && text.includes(query) && (!start.value || date >= start.value) && (!end.value || date <= end.value);
+        card.hidden = !matches;
+        if (matches) count++;
+      });
+      status.textContent = invalid
+        ? (reversed ? "A data inicial deve ser anterior ou igual à data final." : "Informe datas válidas.")
+        : count === 0 ? "Nenhuma publicação encontrada." : `${count} ${count === 1 ? "publicação encontrada" : "publicações encontradas"}.`;
+    };
+    [input, start, end].forEach((field) => field.addEventListener("input", update));
+    update();
+    search.hidden = false;
+  }
+</script>

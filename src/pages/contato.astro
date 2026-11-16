@@ -1,0 +1,15 @@
+---
+import Layout from "../layouts/Layout.astro";
+import PageHeading from "../components/PageHeading.astro";
+import data from "../data/site.js";
+import { officialLinks } from "../data/navigation.js";
+---
+<Layout title="Contato" page="contato" description="Canais de atendimento do Colegiado e do Departamento de Engenharia Elétrica.">
+  <PageHeading eyebrow="Atendimento" title="Contato" description="Informações de atendimento do Colegiado e canais institucionais." />
+  <section class="contact-card" id="contato" aria-label="Contato do Colegiado">
+    <p class="eyebrow">COEE · dados de demonstração</p>
+    <p>{data.contact.institution}</p><p>{data.contact.location}</p><p>{data.contact.email}</p>
+    <span class="demo-note">Confirme os canais oficiais antes de enviar informações pessoais.</span>
+  </section>
+  <section class="content-section useful-links"><h2>Departamento de Engenharia Elétrica</h2><p>Consulte os canais oficiais do DEELT.</p><ul class="official-links"><li><a href={officialLinks.contatoDeelt}>Contato do DEELT ↗</a></li></ul></section>
+</Layout>

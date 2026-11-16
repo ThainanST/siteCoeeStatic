@@ -1,0 +1,14 @@
+---
+import ColegiadoLayout from "../layouts/ColegiadoLayout.astro";
+import DocumentList from "../components/DocumentList.astro";
+import data from "../data/site.js";
+---
+<ColegiadoLayout title="Atas" section="atas" description="Consulte as atas das reuniões do Colegiado.">
+  <section class="content-section">
+    <p>Dados de demonstração: os documentos ainda não possuem endereços oficiais.</p>
+    {data.meetings.map((meeting) => <div class="minutes-entry">
+      <h2>{meeting.title} · <time datetime={meeting.date}>{meeting.date.split("-").reverse().join("/")}</time></h2>
+      <DocumentList documents={[meeting.minutes]} />
+    </div>)}
+  </section>
+</ColegiadoLayout>

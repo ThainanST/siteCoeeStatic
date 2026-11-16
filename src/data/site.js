@@ -1,30 +1,33 @@
-/* Conteúdo local de demonstração. Substitua esta fonte por uma integração futura. */
+/* Conteúdo local de demonstração e referências institucionais já existentes. */
+const courseMaterials = {
+  title: "Matrizes e programas das disciplinas (acervo indicado pelo site anterior)",
+  access: "public",
+  url: "https://drive.google.com/drive/folders/1LuVBmyiDNib__B-bV4F6dTpi_JRhNQJ7"
+};
 export default {
-  navigation: [
-    { id: "inicio", label: "Início", href: "index.html" },
-    { id: "curso", label: "Curso", href: "curso.html" },
-    { id: "aluno", label: "Área do Aluno", href: "area-do-aluno.html" },
-    { id: "tcc", label: "TCC", href: "tcc.html" },
-    { id: "colegiado", label: "Colegiado", href: "colegiado.html" },
-    { id: "noticias", label: "Notícias e editais", href: "noticias-e-editais.html" }
-  ],
   notices: [
     {
       label: "Aviso",
       title: "Período de solicitação de estágio",
-      date: "10 nov 2026",
+      date: "2026-11-10",
       deadline: "30 nov 2026",
       status: "Aberto (demonstração)",
       text: "Confira os documentos necessários antes de encaminhar sua solicitação ao Colegiado.",
-      href: "area-do-aluno.html#estagio"
+      href: "aluno-estagio.html"
     }
   ],
   publications: [
-    { category: "Notícia", title: "Orientações para o próximo semestre", date: "08 nov 2026", status: "Publicado (demonstração)", text: "Consulte os horários, o calendário e os canais de atendimento disponíveis nesta página." },
-    { category: "Edital", title: "Seleção de monitoria — exemplo", date: "04 nov 2026", deadline: "20 nov 2026", status: "Inscrições abertas (demonstração)", text: "Publicação demonstrativa. O edital oficial será disponibilizado quando houver processo seletivo.", document: { title: "Edital de monitoria", access: "public" } }
+    { category: "Notícia", title: "Orientações para o próximo semestre", date: "2026-11-08", status: "Publicado (demonstração)", text: "Consulte os horários, o calendário e os canais de atendimento disponíveis nesta página." },
+    { category: "Edital", title: "Seleção de monitoria — exemplo", date: "2026-11-04", deadline: "20 nov 2026", status: "Inscrições abertas (demonstração)", text: "Publicação demonstrativa. O edital oficial será disponibilizado quando houver processo seletivo.", document: { title: "Edital de monitoria", access: "public" } }
   ],
   course: {
     intro: "O curso de Engenharia Elétrica é ofertado pelo Instituto de Ciências Exatas e Aplicadas (ICEA), no campus de João Monlevade da Universidade Federal de Ouro Preto.",
+    pages: {
+      matriz: { description: "Consulte a organização das disciplinas e a estrutura curricular do curso.", document: courseMaterials },
+      ppc: { description: "O projeto pedagógico reúne os objetivos, o perfil do egresso e as diretrizes de formação.", document: { title: "Projeto Pedagógico do Curso (PPC)", access: "public" } },
+      ementas: { description: "Consulte os programas e conteúdos das disciplinas do curso.", document: courseMaterials },
+      avaliacao: { description: "Acompanhe as informações sobre a avaliação do curso disponibilizadas pelo DEELT." }
+    },
     topics: [
       { title: "Projeto pedagógico", text: "Apresenta os objetivos, o perfil do egresso e as diretrizes de formação do curso." },
       { title: "Matriz curricular", text: "Consulte a organização das disciplinas, os pré-requisitos e a estrutura curricular." },
@@ -149,9 +152,9 @@ export default {
     ]
   },
   members: [
-    { name: "Profa. Ana Martins (demonstração)", role: "Presidenta do Colegiado" },
-    { name: "Prof. Bruno Costa (demonstração)", role: "Representante docente" },
-    { name: "Estudante Camila Souza (demonstração)", role: "Representante discente" }
+    { name: "Profa. Ana Martins (demonstração)", role: "Presidenta do Colegiado", description: "Coordena as reuniões e acompanha as decisões do Colegiado." },
+    { name: "Prof. Bruno Costa (demonstração)", role: "Representante docente", description: "Participa das discussões acadêmicas como representante dos docentes." },
+    { name: "Estudante Camila Souza (demonstração)", role: "Representante discente", description: "Leva ao Colegiado a perspectiva e as demandas dos estudantes." }
   ],
   meetings: [
     { id: "reuniao-2026-10-15", date: "2026-10-15", title: "Reunião ordinária", time: "14h", location: "ICEA · Sala do Colegiado", minutes: { title: "Ata da reunião ordinária", access: "public" } },
@@ -161,9 +164,9 @@ export default {
   ],
   initialMeetingMonth: "2026-11",
   nde: [
-    { name: "Profa. Daniela Lima (demonstração)", role: "Coordenadora do NDE" },
-    { name: "Prof. Eduardo Reis (demonstração)", role: "Membro docente" },
-    { name: "Profa. Fernanda Alves (demonstração)", role: "Membro docente" }
+    { name: "Profa. Daniela Lima (demonstração)", role: "Coordenadora do NDE", description: "Coordena as atividades de acompanhamento do projeto pedagógico." },
+    { name: "Prof. Eduardo Reis (demonstração)", role: "Membro docente", description: "Contribui para a análise e a melhoria da formação no curso." },
+    { name: "Profa. Fernanda Alves (demonstração)", role: "Membro docente", description: "Participa das discussões sobre o desenvolvimento do projeto pedagógico." }
   ],
   colegiadoDocuments: [
     { title: "Atribuições e composição do Colegiado", access: "public" },
